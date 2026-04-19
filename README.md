@@ -2,27 +2,29 @@
 
 A full-stack web application demonstrating a **hybrid approach to graph coloring**:
 
-1. 🧠 A lightweight **PyTorch neural network** predicts initial node colors
+1. 🧠 A lightweight **neural network** predicts initial node colors
 2. ⚙️ A **deterministic correction algorithm** fixes any invalid colorings
 3. 🎨 The result is **visualized interactively** with D3.js
+
+### 🌐 [Live Demo → hybrid-graph-color-ai.vercel.app](https://hybrid-graph-color-ai.vercel.app/)
 
 ---
 
 ## Architecture
 
 ```
-React Frontend  ──POST /color-graph──▶  FastAPI Backend
-                                          │
-                                          ├── model.py (PyTorch NN)
-                                          │     predicted colors ↓
-                                          ├── coloring.py (Correction)
-                                          │     valid colors ↓
-                                          └── JSON response ──▶  D3.js Visualization
+React Frontend  ──POST /api/color-graph──▶  Serverless Function (FastAPI)
+                                               │
+                                               ├── model.py (NumPy NN)
+                                               │     predicted colors ↓
+                                               ├── coloring.py (Correction)
+                                               │     valid colors ↓
+                                               └── JSON response ──▶  D3.js Visualization
 ```
 
 ---
 
-## Quick Start
+## Quick Start (Local Development)
 
 ### Prerequisites
 
@@ -51,11 +53,31 @@ The app will be available at `http://localhost:5173`.
 
 ---
 
+## Deployment (Vercel)
+
+This project is configured for **one-click Vercel deployment**:
+
+- The **React frontend** is built with Vite and served as static files
+- The **FastAPI backend** runs as a Python serverless function via `api/index.py`
+- API routes are proxied through Vercel rewrites (`/api/*` → serverless function)
+
+To deploy your own instance:
+
+1. Fork/clone this repo
+2. Import the repo on [vercel.com](https://vercel.com)
+3. Deploy — `vercel.json` handles all configuration automatically
+
+> **Note:** The neural network uses a pure NumPy implementation (no PyTorch) to fit
+> within Vercel's 250MB serverless function size limit. A PyTorch version is available
+> on the [`pytorch-version`](../../tree/pytorch-version) branch for local development.
+
+---
+
 ## API Endpoints
 
 | Method | Endpoint        | Description                              |
 |--------|-----------------|------------------------------------------|
-| POST   | `/color-graph`  | Accept a graph, run ML + correction      |
+| POST   | `/color-graph`  | Accept a graph, run NN + correction      |
 | POST   | `/random-graph` | Generate a random Erdős–Rényi graph      |
 
 ### Example Request
@@ -77,11 +99,12 @@ The app will be available at `http://localhost:5173`.
 
 ## Tech Stack
 
-| Layer    | Technology                    |
-|----------|-------------------------------|
-| Backend  | FastAPI, PyTorch, NumPy, NetworkX |
-| Frontend | React 18, Vite, D3.js         |
-| Styling  | Vanilla CSS (glassmorphism dark theme) |
+| Layer      | Technology                        |
+|------------|-----------------------------------|
+| Backend    | FastAPI, NumPy, NetworkX          |
+| Frontend   | React 18, Vite, D3.js            |
+| Styling    | Vanilla CSS (glassmorphism dark theme) |
+| Deployment | Vercel (static + serverless)      |
 
 ---
 
@@ -89,11 +112,13 @@ The app will be available at `http://localhost:5173`.
 
 ```
 Hybrid-Graph-Color-AI/
+├── api/
+│   └── index.py             # Vercel serverless entry point
 ├── backend/
-│   ├── main.py            # FastAPI entry point
-│   ├── model.py           # PyTorch neural network
-│   ├── coloring.py        # Correction algorithm
-│   ├── utils.py           # Graph utilities
+│   ├── main.py               # FastAPI application
+│   ├── model.py              # NumPy neural network
+│   ├── coloring.py           # Correction algorithm
+│   ├── utils.py              # Graph utilities
 │   └── requirements.txt
 ├── frontend/
 │   ├── src/
@@ -106,5 +131,13 @@ Hybrid-Graph-Color-AI/
 │   │       └── ResultsPanel.jsx
 │   ├── index.html
 │   └── package.json
+├── vercel.json               # Vercel deployment config
+├── requirements.txt          # Python deps (Vercel runtime)
 └── README.md
 ```
+
+---
+
+## License
+
+MIT
