@@ -3,4 +3,3 @@ uvicorn[standard]
 numpy
 networkx
 pydantic
-torch --index-url https://download.pytorch.org/whl/cpu
