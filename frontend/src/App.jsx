@@ -3,7 +3,7 @@ import GraphInput from './components/GraphInput';
 import GraphVisualization from './components/GraphVisualization';
 import ResultsPanel from './components/ResultsPanel';
 
-const API_BASE = 'http://localhost:8000';
+const API_BASE = import.meta.env.DEV ? '' : '/api';
 
 export default function App() {
   const [data, setData] = useState(null);
