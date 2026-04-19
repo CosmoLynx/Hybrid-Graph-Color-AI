@@ -108,9 +108,3 @@ Hybrid-Graph-Color-AI/
 │   └── package.json
 └── README.md
 ```
-
----
-
-## License
-
-MIT
