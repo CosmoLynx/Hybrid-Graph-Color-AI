@@ -1,4 +1,4 @@
-# Hybrid Graph Coloring AI
+# Hybrid Graph Coloring AI For Register Allocation
 
 A full-stack web application demonstrating a **hybrid approach to graph coloring**:
 
